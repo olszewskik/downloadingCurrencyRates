@@ -1,10 +1,10 @@
 import pandas as pd
 import requests
-import time
 from io import StringIO
 from sqlalchemy import text
 from datetime import datetime, timedelta
 from db import get_engine
+from config import NBP_API_URL_DAILY_RATE_TEMPLATE
 
 def get_date_range(start_date: str, end_date: str) -> list:
     """
@@ -32,7 +32,7 @@ def download_nbp_csv(year: int, rate_type: str) -> pd.DataFrame:
 
     Parametry:
         year (int): Rok, np. 2024
-        rate_type (str): Typ kursu ('average' - Kurs średni, 'average_monthly' - Kurs średnioważony miesięczny, 'average_cumulative' - Kurs średnioważony narastająco)
+        rate_type (str): Typ kursu ('average_monthly' - Kurs średnioważony miesięczny, 'average_cumulative' - Kurs średnioważony narastająco)
 
     Zwraca:
         pd.DataFrame: Dane z pliku CSV
@@ -40,7 +40,6 @@ def download_nbp_csv(year: int, rate_type: str) -> pd.DataFrame:
     base_url = "https://static.nbp.pl/dane/kursy/Archiwum/"
 
     rate_map = {
-        'average': f"archiwum_tab_a_{year}.csv",
         'average_monthly': f"publ_sredni_m_{year}.csv",
         'average_cumulative': f"publ_sredni_n_{year}.csv"
     }
@@ -70,18 +69,22 @@ def download_daily_rates_from_nbp(date_str: str) -> pd.DataFrame:
         date_str (str): Data w formacie 'YYYY-MM-DD'
 
     Zwraca:
-        pd.DataFrame: DataFrame z kolumnami: date, currency_code, currency_name, multiplier, avg_rate
+        pd.DataFrame: DataFrame z kolumnami: date, currency_code, currency_name, avg_rate
                       Jeśli brak danych (np. weekend lub święto), zwraca pusty DataFrame.
     """
-    url = f"https://api.nbp.pl/api/exchangerates/tables/A/{date_str}/?format=json"
+    url = NBP_API_URL_DAILY_RATE_TEMPLATE.format(date=date_str)
 
     try:
-        response = requests.get(url)
+        response = requests.get(url, timeout=10)
         response.raise_for_status()
         data = response.json()
 
-        rates = data[0]["rates"]
-        effective_date = data[0]["effectiveDate"]
+        rates = data[0].get("rates", [])
+        effective_date = data[0].get("effectiveDate")
+
+        if not rates or not effective_date:
+            print(f"⚠️ Brak danych dla {date_str}")
+            return pd.DataFrame()
 
         df = pd.DataFrame(rates)
         df["date"] = pd.to_datetime(effective_date)
@@ -92,15 +95,18 @@ def download_daily_rates_from_nbp(date_str: str) -> pd.DataFrame:
 
     except requests.exceptions.HTTPError as e:
         if response.status_code == 404:
-            # print(f"⚠️ Brak kursów NBP dla dnia {date_str} (dzień wolny?)")
+            # dzień wolny od pracy – nie publikowany kurs
             return pd.DataFrame()
-        else:
-            print(f"❌ Błąd HTTP przy pobieraniu danych z NBP: {e}")
-            raise
+        print(f"❌ Błąd HTTP przy pobieraniu kursów NBP dla {date_str}: {e}")
+        return pd.DataFrame()
+
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Błąd połączenia z API NBP dla {date_str}: {e}")
+        return pd.DataFrame()
 
     except Exception as e:
-        print(f"❌ Błąd ogólny przy pobieraniu danych z NBP: {e}")
-        raise
+        print(f"❌ Nieoczekiwany błąd przy pobieraniu kursów NBP dla {date_str}: {e}")
+        return pd.DataFrame()
 
 def clean_nbp_data(df: pd.DataFrame, kurs_type: str, year: int) -> pd.DataFrame:
     """
@@ -208,10 +214,8 @@ def save_to_db(df: pd.DataFrame, rate_type: str):
     with engine.begin() as connection:
         for _, row in df_to_insert.iterrows():
             query = text(f"""
-                INSERT INTO exchange_rate (date, currency_code, currency_name, avg_rate,
-                                           avg_monthly_rate, avg_cumulative_rate, load_date)
-                VALUES (:date, :currency_code, :currency_name, :avg_rate,
-                        :avg_monthly_rate, :avg_cumulative_rate, :load_date)
+                INSERT INTO exchange_rate (date, currency_code, currency_name, avg_rate, load_date)
+                VALUES (:date, :currency_code, :currency_name, :avg_rate, :load_date)
                 ON CONFLICT (date, currency_code) DO UPDATE SET
                     {target_column} = EXCLUDED.{target_column},
                     load_date = EXCLUDED.load_date
@@ -241,14 +245,12 @@ if __name__ == '__main__':
 
     # today = datetime.now().strftime("%Y-%m-%d")
 
-    start_time = time.time()
 
-    date_list = get_date_range("2007-01-01", "2024-12-31")
+    date_list = get_date_range("2025-01-11", "2025-01-12")
 
     for date in date_list:
         df_daily_rates = download_daily_rates_from_nbp(date)
         save_to_db(df_daily_rates, 'average')
 
-    elapsed = time.time() - start_time
-    print(f"✅ Czas wykonywania: {elapsed:.2f} sekundy.")
+
 

@@ -14,3 +14,7 @@ DB_NAME = os.getenv("DB_NAME")
 
 # Tworzenie URL-a dla SQLAlchemy
 DB_URL = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+
+# API NBP
+NBP_API_URL_DAILY_RATE_TEMPLATE = "https://api.nbp.pl/api/exchangerates/tables/A/{date}/?format=json"
+
