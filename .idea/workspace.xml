@@ -4,29 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="29aa24e6-d687-41df-828c-554cb6ddf875" name="Changes" comment="added download and save daily rates from api">
-      <change afterPath="$PROJECT_DIR$/.idea/downloadingCurrencyRates.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/application.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/clients/nbp_api_client.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/loaders/csv_loader.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/services/exchange_rate_manager.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/services/exchange_rate_saver.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/settings.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/db/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/db/db_manager.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/db/engine.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/db/models.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/db/session_manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.env_example" beforeDir="false" afterPath="$PROJECT_DIR$/.env_example" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/db.py" beforeDir="false" />
+    <list default="true" id="29aa24e6-d687-41df-828c-554cb6ddf875" name="Changes" comment="refactor">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/application.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/application.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/services/exchange_rate_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/exchange_rate_manager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/db_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/db/db_manager.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -112,7 +95,7 @@
       <updated>1745062883136</updated>
       <workItem from="1745062884227" duration="43481000" />
       <workItem from="1745250189807" duration="44000" />
-      <workItem from="1745250243976" duration="4366000" />
+      <workItem from="1745250243976" duration="5221000" />
     </task>
     <task id="LOCAL-00001" summary="added config project">
       <option name="closed" value="true" />
@@ -138,7 +121,15 @@
       <option name="project" value="LOCAL" />
       <updated>1745165193160</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="refactor">
+      <option name="closed" value="true" />
+      <created>1745254840501</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1745254840501</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -147,10 +138,11 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="added config project" />
     <MESSAGE value="added download and save daily rates from api" />
-    <option name="LAST_COMMIT_MESSAGE" value="added download and save daily rates from api" />
+    <MESSAGE value="refactor" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/downloadingCurrencyRates$engine.coverage" NAME="engine Coverage Results" MODIFIED="1745216972054" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/db" />
-    <SUITE FILE_PATH="coverage/downloadingCurrencyRates$main.coverage" NAME="main Coverage Results" MODIFIED="1745253517829" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/downloadingCurrencyRates$main.coverage" NAME="main Coverage Results" MODIFIED="1745255388454" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

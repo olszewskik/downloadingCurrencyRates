@@ -29,11 +29,11 @@ class Application:
             saver=self.saver
         )
 
-    def run_sync(self, start_date: str, end_date: str, year: int):
+    def run_sync(self, year: int):
         """
         Uruchamia synchronizację wszystkich kursów.
         """
-        self.manager.sync_all(start_date, end_date, year)
+        self.manager.sync_all(year)
 
     def run_daily_only(self, start_date: str, end_date: str):
         """
