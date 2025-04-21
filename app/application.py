@@ -1,3 +1,4 @@
+from .logger import Logger
 from config.settings import Config
 from db.engine import DbEngine
 from db.db_manager import DatabaseManager
@@ -14,6 +15,7 @@ class Application:
     def __init__(self):
         # Konfiguracja
         self.config = Config()
+        self.logger = Logger()
 
         # Baza danych
         self.db_engine = DbEngine()
@@ -28,12 +30,6 @@ class Application:
             csv_loader=self.csv_loader,
             saver=self.saver
         )
-
-    def run_sync(self, year: int):
-        """
-        Uruchamia synchronizację wszystkich kursów.
-        """
-        self.manager.sync_all(year)
 
     def run_daily_only(self, start_date: str, end_date: str):
         """
@@ -52,3 +48,14 @@ class Application:
         Uruchamia synchronizację tylko kursów narastających.
         """
         self.manager.sync_cumulative_rates(year)
+
+    def run_sync(self, year: int):
+        """
+        Uruchamia synchronizację wszystkich kursów.
+        """
+        self.logger.log_start(self.config.LOG_STARTING_APP_MSG)
+        try:
+            self.manager.sync_all(year)
+            self.logger.log_success(self.config.LOG_FINISHED_APP_SUCCESS_MSG)
+        except SystemExit as e:
+            self.logger.log_error(self.config.LOG_FINISHED_APP_ERROR_MSG, e)

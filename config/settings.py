@@ -14,6 +14,7 @@ class Config:
         Wywołuje metody konfigurujące bazę danych oraz API NBP.
         """
         load_dotenv()
+        self.setup_logging()
         self.setup_database()
         self.setup_api_nbp()
         self.setup_csv_nbp()
@@ -61,9 +62,47 @@ class Config:
         Konfiguruje URL-e do plików CSV NBP na podstawie zmiennych środowiskowych.
         """
         self.NBP_CSV_BASE_URL = "https://static.nbp.pl/dane/kursy/Archiwum/"
-        self.NBP_CSV_MONTHLY_URL = os.getenv("NBP_CSV_MONTHLY_URL", "https://static.nbp.pl/dane/kursy/Archiwum/publ_sredni_m_2025.csv")
-        self.NBP_CSV_CUMULATIVE_URL = os.getenv("NBP_CSV_CUMULATIVE_URL", "https://static.nbp.pl/dane/kursy/Archiwum/publ_sredni_n_2025.csv")
 
+    def setup_logging(self):
+        """Konfiguruje ustawienia logowania."""
+        # Ścieżki do plików log
+        self.LOG_DIRECTORY = os.path.join(os.path.dirname(__file__), "..", "logs")
+        self.LOG_FILE = os.path.join(self.LOG_DIRECTORY, "app.log")
+        # self.ERROR_LOG_DIRECTORY = os.path.join("logs", "error")
+        # self.DATA_LOG_DIRECTORY = os.path.join("logs", "data")
+
+        # # Komunikaty do loggera
+        # self.LOG_DB_CONNECT_SUCCESS_MSG = "The connection to the {db_system} database in the {environment} environment is correct."
+        # self.LOG_DB_CONNECT_ERROR_MSG = "There was a problem connecting to the {db_system} database in the {environment} environment: {error}"
+        self.LOG_STARTING_APP_MSG = "Starting the application ..."
+        self.LOG_FINISHED_APP_SUCCESS_MSG = "Application finished successfully."
+        self.LOG_FINISHED_APP_ERROR_MSG = (
+            "Application terminated with an error: {error}"
+        )
+
+        # self.LOG_EXTRACTION_STARTED_MSG = "{dataset_name} extraction process started."
+        # self.LOG_EXTRACTION_FAILED_MSG = "{dataset_name} extraction failed: {error}"
+        #
+        # self.LOG_TRANSFORM_STARTED_MSG = "{dataset_name} transform process started."
+        # self.LOG_TRANSFORM_FAILED_MSG = "{dataset_name} transform failed: {error}"
+        #
+        # self.LOG_LOAD_STARTED_MSG = "{dataset_name} load process started."
+        # self.LOG_LOAD_FAILED_MSG = "{dataset_name} load failed: {error}"
+        # self.LOG_WHSE_TRANSFER_ERROR = "{errors_quantity} error {dataset_name} records."
+        # self.LOG_FAIL_LOAD_RECORD_MSG = (
+        #     "Failed to load record at index {index}: {error}"
+        # )
+        # self.LOG_NEW_RECORDS_INSERT_MSG = (
+        #     "{new_records_count} new {dataset_name} records"
+        # )
+        # self.LOG_COMMIT_FAILE_MSG = (
+        #     "Failed to commit the records to the database: {error}"
+        # )
+        #
+        # self.LOG_ETL_PROCESS_SUCCESS_MSG = (
+        #     "{dataset_name} ETL process for completed successfully."
+        # )
+        # self.LOG_ERROR_SAVE_TO_FILE = "Error writing data to file: {error}"
 
 # Globalna instancja Config
 config = Config()

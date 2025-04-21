@@ -1,5 +1,4 @@
 from app.application import Application
-from datetime import date
 
 if __name__ == "__main__":
     app = Application()
