@@ -46,3 +46,12 @@ class Logger:
             message (str): Wiadomość do zalogowania.
         """
         self.logger.info(message)
+
+    def log_warning(self, message):
+        """
+        Loguje informację o zakończeniu operacji.
+
+        Args:
+            message (str): Wiadomość do zalogowania.
+        """
+        self.logger.warning(message)

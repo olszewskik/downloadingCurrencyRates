@@ -3,8 +3,13 @@ from db.engine import DbEngine
 from db.session_manager import SessionManager
 from sqlalchemy.orm import Session
 import pandas as pd
+import inspect
 from sqlalchemy import func
 from db.models import ExchangeRateDaily, ExchangeRateMonthly, ExchangeRateCumulative
+from config.settings import config
+from config.logging import LoggingConfig
+
+logger = LoggingConfig.get_logger()
 
 class DatabaseManager:
     def __init__(self, db_engine: DbEngine):
@@ -18,6 +23,7 @@ class DatabaseManager:
 
     def insert_daily_rates(self, df: pd.DataFrame):
         if df.empty:
+            logger.warning(config.LOG_NO_DATA_FOUND_MSG.format(method_name="insert_daily_rates"))
             print("🔕 Brak danych do zapisania (daily).")
             return
 

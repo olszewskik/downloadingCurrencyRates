@@ -76,9 +76,9 @@ class Config:
         # self.LOG_DB_CONNECT_ERROR_MSG = "There was a problem connecting to the {db_system} database in the {environment} environment: {error}"
         self.LOG_STARTING_APP_MSG = "Starting the application ..."
         self.LOG_FINISHED_APP_SUCCESS_MSG = "Application finished successfully."
-        self.LOG_FINISHED_APP_ERROR_MSG = (
-            "Application terminated with an error: {error}"
-        )
+        self.LOG_FINISHED_APP_ERROR_MSG = ("Application terminated with an error: {error}")
+
+        self.LOG_NO_DATA_FOUND_MSG = ("{method_name}: No data found for the given date range.")
 
         # self.LOG_EXTRACTION_STARTED_MSG = "{dataset_name} extraction process started."
         # self.LOG_EXTRACTION_FAILED_MSG = "{dataset_name} extraction failed: {error}"
